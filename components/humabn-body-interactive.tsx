@@ -22,6 +22,7 @@ export default function HumanBodyViewerInteractive({
 }: HumanBodyViewerInteractiveProps) {
     const [internalSelectedPart, setInternalSelectedPart] = useState<string | null>(null);
     const [viewAllMode, setViewAllMode] = useState<boolean>(true);
+    const [isModelLoaded, setIsModelLoaded] = useState<boolean>(false);
 
     const selectedPart = externalSelectedPart !== undefined ? externalSelectedPart : internalSelectedPart;
 
@@ -43,6 +44,18 @@ export default function HumanBodyViewerInteractive({
     return (
         <div className="w-full h-full flex flex-col items-center justify-center relative bg-white">
             <div className="w-full h-full max-w-full relative min-h-[400px]">
+                {/* Loading State */}
+                {!isModelLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+                            <p className="text-sm text-gray-600 font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                Loading 3D Model...
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {/* View All Toggle Button */}
                 {/* {allSelectedParts.length > 1 && (
                     <button
@@ -62,13 +75,12 @@ export default function HumanBodyViewerInteractive({
                     resize={{ scroll: false, debounce: 100 }}
                     className="w-full h-full"
                     camera={{
-
                         position: [0, 0, 35.5],
                         fov: 38,
                         near: 0.1,
                         far: 100
                     }}
-                    style={{ background: 'transparent' }}
+                    style={{ background: 'transparent', opacity: isModelLoaded ? 1 : 0, transition: 'opacity 0.3s ease-in' }}
                 >
                     {/* Soft medical lighting */}
                     <ambientLight intensity={0.9} />
@@ -81,6 +93,7 @@ export default function HumanBodyViewerInteractive({
                         onPartSelect={handlePartSelect}
                         focusRegions={focusRegions}
                         clickable={clickable}
+                        onModelLoaded={() => setIsModelLoaded(true)}
                     />
 
 

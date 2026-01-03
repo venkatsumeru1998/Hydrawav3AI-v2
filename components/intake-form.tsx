@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Card from './Card';
 import Sidebar from './sidebar';
 import Section1 from './sections/Section1';
@@ -35,6 +36,7 @@ const GENERATING_MESSAGES = [
 ];
 
 const IntakeForm = () => {
+    const router = useRouter();
     const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
     const [activeNav, setActiveNav] = useState<number>(1);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -124,13 +126,20 @@ const IntakeForm = () => {
             setReportId(responseId);
 
             // Redirect to report page if reportId is available
+            // Use Next.js router for faster client-side navigation
             if (responseId) {
-                window.location.href = `/reports/${responseId}`;
+                // Navigate immediately - router.push is faster than window.location.href
+                router.push(`/reports/${responseId}`);
+                // Keep loading state visible during navigation transition
+                // The loading state will be cleared when component unmounts on navigation
+                return;
             }
+
+            // If no reportId, stop analyzing
+            setIsAnalyzing(false);
         } catch (error) {
             console.error("AI Analysis Error:", error);
             alert("Encountered an issue with the AI diagnostic engine. Please retry the assessment.");
-        } finally {
             setIsAnalyzing(false);
         }
     };

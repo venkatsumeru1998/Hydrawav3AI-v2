@@ -41,8 +41,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             <aside className={`fixed left-0 top-0 bottom-0 w-80 sidebar-bg text-white flex flex-col p-8 z-[100] transition-transform duration-500 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="mb-10 flex items-center justify-center gap-4">
-                    <div>
-                        <Image src="/logo.png" width={200} height={200} alt="Hydrawav3AI Logo" />
+                    <div className="w-[200px] h-[50px] relative shrink-0">
+                        <Image
+                            src="/logo.png"
+                            width={200}
+                            height={200}
+                            alt="Hydrawav3AI Logo"
+                            className="object-contain"
+                            priority
+                            style={{ width: '100%', height: '100%' }}
+                        />
                     </div>
                 </div>
                 <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">

@@ -286,6 +286,7 @@ interface HumanBodyPartsProps {
     onPartSelect: (partName: string) => void;
     focusRegions?: string[];
     clickable?: boolean;
+    onModelLoaded?: () => void;
 }
 
 // ------------------------------------
@@ -424,11 +425,13 @@ export function HumanBodyParts({
     selectedParts = [],
     onPartSelect,
     focusRegions = [],
-    clickable = true
+    clickable = true,
+    onModelLoaded
 }: HumanBodyPartsProps) {
     const { camera, gl, scene } = useThree();
     const bodyGroupRef = useRef<Group>(null);
     const [isCentered, setIsCentered] = useState(false);
+    const [modelsLoaded, setModelsLoaded] = useState(false);
 
     // Raycast click handler for group selection
     useEffect(() => {
@@ -477,21 +480,45 @@ export function HumanBodyParts({
         };
     }, [camera, gl, scene, clickable]);
 
-    // Center vertically (same as before)
+    // Center vertically and track when all models are loaded
     useFrame(() => {
-        if (!bodyGroupRef.current || isCentered) return;
+        if (!bodyGroupRef.current) return;
+
         const box = new Box3();
         let hasMeshes = false;
+        let meshCount = 0;
+
         bodyGroupRef.current.traverse((obj: any) => {
             if (obj.isMesh && obj.geometry) {
                 box.expandByObject(obj);
                 hasMeshes = true;
+                meshCount++;
             }
         });
-        if (hasMeshes && !box.isEmpty()) {
-            const center = box.getCenter(new Vector3());
-            bodyGroupRef.current.position.y = -center.y;
-            setIsCentered(true);
+
+        if (hasMeshes && !box.isEmpty() && meshCount > 0) {
+            // Center the model both horizontally and vertically
+            if (!isCentered) {
+                const center = box.getCenter(new Vector3());
+                const size = box.getSize(new Vector3());
+
+                // Center the model
+                bodyGroupRef.current.position.x = -center.x;
+                bodyGroupRef.current.position.y = -center.y;
+                bodyGroupRef.current.position.z = -center.z;
+
+                setIsCentered(true);
+            }
+
+            // Consider model loaded when we have a reasonable number of meshes and it's centered
+            // We expect at least 20+ meshes for all body parts
+            if (isCentered && !modelsLoaded && meshCount >= 20) {
+                // Small delay to ensure everything is settled and camera is positioned
+                setTimeout(() => {
+                    setModelsLoaded(true);
+                    onModelLoaded?.();
+                }, 500);
+            }
         }
     });
 
