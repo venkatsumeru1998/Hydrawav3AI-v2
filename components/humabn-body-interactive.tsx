@@ -24,15 +24,15 @@ export default function HumanBodyViewerInteractive({
     const [viewAllMode, setViewAllMode] = useState<boolean>(true);
     const [isModelLoaded, setIsModelLoaded] = useState<boolean>(false);
     const [loadError, setLoadError] = useState<string | null>(null);
-    
+
     // Track if models have been loaded at least once - use ref to persist across re-renders
     const hasLoadedOnceRef = useRef<boolean>(false);
     const initialLoadKeyRef = useRef<string>(`${allSelectedParts.join('-')}-${focusRegions.join('-')}`);
-    
+
     // Only reset loading state when the actual body parts list changes (not just selection)
     useEffect(() => {
         const currentKey = `${allSelectedParts.join('-')}-${focusRegions.join('-')}`;
-        
+
         // Only reset if the body parts actually changed (not just selection)
         if (currentKey !== initialLoadKeyRef.current) {
             initialLoadKeyRef.current = currentKey;
@@ -43,11 +43,11 @@ export default function HumanBodyViewerInteractive({
             }
         }
     }, [allSelectedParts, focusRegions]);
-    
+
     // Fallback: hide loader after max 6 seconds to prevent stuck loading state (only on initial load)
     useEffect(() => {
         if (hasLoadedOnceRef.current) return; // Don't set timeout if already loaded
-        
+
         const fallbackTimer = setTimeout(() => {
             if (!isModelLoaded && !hasLoadedOnceRef.current) {
                 console.warn('Model loading timeout - showing model anyway');
@@ -55,10 +55,10 @@ export default function HumanBodyViewerInteractive({
                 hasLoadedOnceRef.current = true;
             }
         }, 6000);
-        
+
         return () => clearTimeout(fallbackTimer);
     }, [isModelLoaded]);
-    
+
     // Handle model loaded callback with error handling
     const handleModelLoaded = () => {
         try {
@@ -102,7 +102,7 @@ export default function HumanBodyViewerInteractive({
                         </div>
                     </div>
                 )}
-                
+
                 {/* Error State */}
                 {loadError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
@@ -152,8 +152,8 @@ export default function HumanBodyViewerInteractive({
                         near: 0.1,
                         far: 100
                     }}
-                    style={{ 
-                        background: 'transparent', 
+                    style={{
+                        background: 'transparent',
                         opacity: hasLoadedOnceRef.current ? 1 : (isModelLoaded ? 1 : 0),
                         transition: hasLoadedOnceRef.current ? 'none' : 'opacity 0.3s ease-in'
                     }}
