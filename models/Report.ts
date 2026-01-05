@@ -1,9 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export interface PersonalSnapshot {
+    name?: string;
+    email?: string;
+    phoneNumber?: string;
+    age?: string;
+    primary_concern?: string;
+    [key: string]: any;
+}
+
 export interface IReport extends Document {
+
     schema_version: string;
     report_type: string;
-    personal_snapshot: any;
+    personal_snapshot: PersonalSnapshot;
     clinical_insight_snapshot: any;
     movement_observations: any;
     kinetic_chain_hypothesis_a: any;

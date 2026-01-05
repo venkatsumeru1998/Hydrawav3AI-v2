@@ -6,6 +6,9 @@ export interface MovementAssessment {
 }
 
 export interface FormData {
+  name: string;
+  email: string;
+  phoneNumber: string;
   age: string;
   sexAtBirth: string;
   height: string;

@@ -167,6 +167,28 @@ function generatePDFHTML(report: any): string {
     ${report.personal_snapshot ? `
     <div class="personal-snapshot">
         <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">Personal Snapshot</h2>
+        ${(report.personal_snapshot.name || report.personal_snapshot.email || report.personal_snapshot.phoneNumber) ? `
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            ${report.personal_snapshot.name ? `
+            <div>
+                <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Name</div>
+                <div style="font-size: 18px; font-weight: 500;">${report.personal_snapshot.name}</div>
+            </div>
+            ` : ''}
+            ${report.personal_snapshot.email ? `
+            <div>
+                <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Email</div>
+                <div style="font-size: 18px; font-weight: 500;">${report.personal_snapshot.email}</div>
+            </div>
+            ` : ''}
+            ${report.personal_snapshot.phoneNumber ? `
+            <div>
+                <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Phone</div>
+                <div style="font-size: 18px; font-weight: 500;">${report.personal_snapshot.phoneNumber}</div>
+            </div>
+            ` : ''}
+        </div>
+        ` : ''}
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
             ${report.personal_snapshot.age ? `
             <div>

@@ -288,7 +288,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ report, reportId }) => {
             <main className="flex-1 lg:ml-80 min-h-screen px-6 py-16 lg:px-24 space-y-16 max-w-7xl transition-all relative">
                 {/* Top Right Action Buttons */}
                 <div className="fixed top-6 right-6 z-50 flex gap-3 lg:right-24">
-                    {/* <button
+                    <button
                         data-pdf-button
                         onClick={handleDownloadPDF}
                         className="flex items-center gap-2 px-5 py-3 bg-orange-600 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -298,7 +298,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ report, reportId }) => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         Download PDF
-                    </button> */}
+                    </button>
                     <button
                         onClick={() => router.push('/')}
                         className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all"
@@ -337,27 +337,65 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ report, reportId }) => {
                             <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: 'var(--font-poppins)' }}>
                                 Personal Snapshot
                             </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {report.personal_snapshot.age && (
-                                    <div>
-                                        <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
-                                            Age
-                                        </div>
-                                        <div className="text-3xl font-bold" style={{ fontFamily: 'var(--font-poppins)' }}>
-                                            {report.personal_snapshot.age}
-                                        </div>
+                            <div className="space-y-6">
+                                {/* Contact Information */}
+                                {(report.personal_snapshot.name || report.personal_snapshot.email || report.personal_snapshot.phoneNumber) && (
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-white/10">
+                                        {report.personal_snapshot.name && (
+                                            <div>
+                                                <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    Name
+                                                </div>
+                                                <div className="text-lg font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    {report.personal_snapshot.name}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {report.personal_snapshot.email && (
+                                            <div>
+                                                <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    Email
+                                                </div>
+                                                <div className="text-lg font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    {report.personal_snapshot.email}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {report.personal_snapshot.phoneNumber && (
+                                            <div>
+                                                <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    Phone
+                                                </div>
+                                                <div className="text-lg font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                    {report.personal_snapshot.phoneNumber}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-                                {report.personal_snapshot.primary_concern && (
-                                    <div className="md:col-span-2 lg:col-span-3">
-                                        <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
-                                            Primary Concern
+                                {/* Age and Primary Concern */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {report.personal_snapshot.age && (
+                                        <div>
+                                            <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                Age
+                                            </div>
+                                            <div className="text-3xl font-bold" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                {report.personal_snapshot.age}
+                                            </div>
                                         </div>
-                                        <div className="text-lg font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
-                                            {report.personal_snapshot.primary_concern}
+                                    )}
+                                    {report.personal_snapshot.primary_concern && (
+                                        <div className="md:col-span-2 lg:col-span-3">
+                                            <div className="text-sm font-semibold text-white/70 uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                Primary Concern
+                                            </div>
+                                            <div className="text-lg font-medium" style={{ fontFamily: 'var(--font-poppins)' }}>
+                                                {report.personal_snapshot.primary_concern}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}

@@ -134,6 +134,26 @@ export async function POST(request: NextRequest) {
         ) {
             try {
                 await connectToDatabase();
+                
+                // Extract name, email, phoneNumber from formData if available
+                const formData = 'formData' in body ? body.formData : null;
+                if (formData) {
+                    // Ensure personal_snapshot exists
+                    if (!value.personal_snapshot) {
+                        value.personal_snapshot = {};
+                    }
+                    // Add name, email, phoneNumber to personal_snapshot
+                    if (formData.name) {
+                        value.personal_snapshot.name = formData.name;
+                    }
+                    if (formData.email) {
+                        value.personal_snapshot.email = formData.email;
+                    }
+                    if (formData.phoneNumber) {
+                        value.personal_snapshot.phoneNumber = formData.phoneNumber;
+                    }
+                }
+                
                 const doc = new Report(value);
                 const saved = await doc.save();
                 savedReport = JSON.parse(JSON.stringify(saved));

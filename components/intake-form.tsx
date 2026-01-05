@@ -15,6 +15,7 @@ import { FormData } from '@/types';
 import { SECTIONS, SYSTEM_PROMPT } from '@/constants';
 
 const INITIAL_DATA: FormData = {
+    name: '', email: '', phoneNumber: '',
     age: '', sexAtBirth: '', height: '', weight: '',
     primaryDiscomfortArea: '', primaryIntensity: 5, primaryDuration: '', primaryBehavior: '',
     hasOtherDiscomfort: '', secondaryDiscomfortArea: '', secondaryIntensity: 5, secondaryDuration: '', secondaryBehavior: '',
